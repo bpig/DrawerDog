@@ -1,16 +1,32 @@
 package bpig.drawerdog;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import static bpig.drawerdog.R.id.item_recycler;
+
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getActionBar().hide();
+        RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ItemAdapter adapter = new ItemAdapter(Item.items);
+        recyclerView.setAdapter(adapter);
+        adapter.setListener(new ItemAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+
+            }
+        });
     }
 
     @Override
@@ -26,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case (R.id.action_settings) {
+            case R.id.action_settings: {
                 return true;
             }
         }
