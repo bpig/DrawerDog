@@ -2,5 +2,6 @@
     <string name="app_name">DrawerDog</string>
 
     <string name="hello_world">DrawerDog</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Photo</string>
+    <string name="title_activity_label">LabelActivity</string>
 </resources>
