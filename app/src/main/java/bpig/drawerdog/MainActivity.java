@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +23,17 @@ import bpig.drawerdog.adapter.ImageItemAdapter;
 import bpig.drawerdog.adapter.LeftItemAdapter;
 import bpig.drawerdog.dao.ImageItem;
 import bpig.drawerdog.dao.LeftMenuItem;
+import bpig.drawerdog.views.FlowLayout;
 
 import static bpig.drawerdog.R.id.item_recycler;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class MainActivity extends Activity {
     private static final String TAG = "xxxx";
     private MediaCapturer mMediaCapturer;
     private DrawerLayout mMainDrawerLayout;
     private ListView mLeftMenu;
+    private FlowLayout mRightMenuLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,7 @@ public class MainActivity extends Activity {
         mMainDrawerLayout = (DrawerLayout) findViewById(R.id.act_main_drawerlayout);
         initMainLayout();
         initLeftMenuLayout();
+        initRightMenuLayout();
     }
 
     private void initMainLayout() {
@@ -68,6 +75,21 @@ public class MainActivity extends Activity {
         LeftItemAdapter adapter = new LeftItemAdapter(this, itemList);
         mLeftMenu.setAdapter(adapter);
         mLeftMenu.setOnItemClickListener(new LeftDrawerItemClick());
+    }
+
+    private void initRightMenuLayout() {
+        mRightMenuLayout = (FlowLayout)findViewById(R.id.right_layout_menu);
+        List<String> tagList = new ArrayList<String>();
+        tagList.add("基地"); tagList.add("路灯"); tagList.add("天鹅蓝");
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        for (int i = 0; i < tagList.size(); ++i) {
+            final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
+                    inflate(R.layout.item_tag_layout, null);
+            TextView txtView = (TextView)llayout.findViewById(R.id.tag_item_textview);
+            txtView.setText(tagList.get(i));
+            llayout.setTag(i);
+            mRightMenuLayout.addView(llayout, layoutParams);
+        }
     }
 
     @Override
