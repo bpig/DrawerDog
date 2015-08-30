@@ -17,5 +17,12 @@
 
     <include layout="@layout/activity_main" />
 
+    <bpig.drawerdog.views.FlowLayout
+        android:id="@+id/right_layout_menu"
+        android:layout_gravity="end"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+    </bpig.drawerdog.views.FlowLayout>
 
 </android.support.v4.widget.DrawerLayout>
