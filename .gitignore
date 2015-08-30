@@ -1,0 +1,6 @@
+## Local configuration files
+local.properties
+DrawerDog.iml
+.idea
+build
+.gradle

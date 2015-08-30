@@ -3,19 +3,38 @@ package bpig.drawerdog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bpig.drawerdog.adapter.LeftItemAdapter;
+import bpig.drawerdog.dao.LeftMenuItem;
 
 import static bpig.drawerdog.R.id.item_recycler;
 
 public class MainActivity extends Activity {
-    private MediaCapturer mediaCapturer;
+
+    private DrawerLayout mMainDrawerLayout;
+    private RelativeLayout mLeftMenuLayout;
+    private List<LeftMenuItem> mLeftItemList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_drawer);
+        mMainDrawerLayout = (DrawerLayout)findViewById(R.id.act_main_drawerlayout);
 //        getActionBar().hide();
         mediaCapturer = new MediaCapturer(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
@@ -29,6 +48,8 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        initLeftMenuLayout();
     }
 
     @Override
@@ -44,8 +65,10 @@ public class MainActivity extends Activity {
         if (mediaCapturer.process(itemId)) {
             return true;
         }
-        switch (itemId) {
-            default:
+            case R.id.action_left_menu:
+                mMainDrawerLayout.openDrawer(mLeftMenuLayout);
+                return true;
+        }
                 return super.onOptionsItemSelected(item);
         }
     }
