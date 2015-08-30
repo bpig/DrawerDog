@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import bpig.drawerdog.Item;
+import bpig.drawerdog.dao.ImageItem;
 import bpig.drawerdog.R;
 
 /**
@@ -17,15 +17,15 @@ import bpig.drawerdog.R;
  * Date: 2015-08-29
  * Time: 19:20
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-    private Item[] items;
+public class ImageItemAdapter extends RecyclerView.Adapter<ImageItemAdapter.ViewHolder> {
+    private ImageItem[] items;
     private Listener listener;
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    public ItemAdapter(Item[] items) {
+    public ImageItemAdapter(ImageItem[] items) {
         this.items = items;
 
     }

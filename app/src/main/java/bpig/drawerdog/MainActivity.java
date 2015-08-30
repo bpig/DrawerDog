@@ -15,8 +15,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import bpig.drawerdog.adapter.ItemAdapter;
+import bpig.drawerdog.adapter.ImageItemAdapter;
 import bpig.drawerdog.adapter.LeftItemAdapter;
+import bpig.drawerdog.dao.ImageItem;
 import bpig.drawerdog.dao.LeftMenuItem;
 
 import static bpig.drawerdog.R.id.item_recycler;
@@ -40,9 +41,9 @@ public class MainActivity extends Activity {
         RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        ItemAdapter adapter = new ItemAdapter(Item.items);
+        ImageItemAdapter adapter = new ImageItemAdapter(ImageItem.items);
         recyclerView.setAdapter(adapter);
-        adapter.setListener(new ItemAdapter.Listener() {
+        adapter.setListener(new ImageItemAdapter.Listener() {
             @Override
             public void onClick(int position) {
 
@@ -93,7 +94,6 @@ public class MainActivity extends Activity {
             return;
         }
     }
-
 
     private class LeftDrawerItemClick implements ListView.OnItemClickListener {
         @Override
