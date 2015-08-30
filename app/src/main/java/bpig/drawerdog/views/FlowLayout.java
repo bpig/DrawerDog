@@ -5,9 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 public class FlowLayout extends ViewGroup {
+    private static final String TAG = "xxxx";
     public FlowLayout(Context context) {
         this(context, null);
     }
@@ -22,8 +21,7 @@ public class FlowLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int maxLineWidth = getWidth();
-        ArrayList<View> lineViews = new ArrayList<>();
+        int lineWidth = getMeasuredWidth();
         int lineHeight = 0;
         int lineLeft = 0;
         int lineTop = 0;
@@ -33,30 +31,23 @@ public class FlowLayout extends ViewGroup {
             int ch = child.getMeasuredHeight();
 
             MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-            int left = lp.leftMargin;
-            int top = lp.topMargin;
-            int right = 0;
-            int bottom = 0;
-            if( lineLeft + lp.leftMargin + cw + lp.rightMargin > maxLineWidth){
-                lineTop += lineHeight + lp.bottomMargin;
+            if (lineLeft + lp.leftMargin + cw + lp.rightMargin > lineWidth) {
+                lineTop += lineHeight;
                 lineLeft = 0;
-            }else{
-                lineHeight  = Math.max(lineHeight, ch + lp.bottomMargin);
+                lineHeight = 0;
             }
-            left += lineLeft ;
-            top += lineTop;
-            right = left + cw ;
-            if (right > getMeasuredWidth()){
-                right = getMeasuredWidth() - lp.rightMargin;
-            }
-            bottom = top + ch ;
+            int left = lineLeft + lp.leftMargin;
+            int top = lineTop + lp.topMargin;
+            int right = left + cw;
+            int bottom = top + ch;
             child.layout(left, top, right, bottom);
             lineLeft = right + lp.rightMargin;
+            lineHeight = Math.max(lineHeight, lp.topMargin + ch + lp.bottomMargin);
         }
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int count = getChildCount();
 
@@ -64,39 +55,36 @@ public class FlowLayout extends ViewGroup {
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         final int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         final int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-
         int maxWidth = 0;
         int maxHeight = 0;
         int lineWidth = 0;
         int lineHeight = 0;
-        for (int i = 0 ; i < count; i++){
+        for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             int cwidth = child.getMeasuredWidth();
             int cheight = child.getMeasuredHeight();
 
             MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-
-            cwidth += lp.leftMargin+lp.rightMargin;
-            cheight += lp.topMargin+lp.bottomMargin;
-            if(lineWidth + cwidth > sizeWidth){
+            cwidth += lp.leftMargin + lp.rightMargin;
+            cheight += lp.topMargin + lp.bottomMargin;
+            if (lineWidth + cwidth > sizeWidth) {
                 maxWidth = Math.max(maxWidth, lineWidth);
                 maxHeight += lineHeight;
-
                 lineWidth = cwidth;
                 lineHeight = cheight;
-            }else{
+            } else {
                 lineWidth += cwidth;
                 lineHeight = Math.max(lineHeight, cheight);
             }
         }
-        // 最后一个子View,
+        // last view line
+        maxWidth = Math.max(maxWidth, lineWidth);
         maxHeight += lineHeight;
-        //
-        int w = widthMode == MeasureSpec.EXACTLY ? sizeWidth : maxWidth;
-        int h = heightMode == MeasureSpec.EXACTLY ? sizeHeight : maxHeight;
-        setMeasuredDimension(w, h);
 
+        int w = widthMode == MeasureSpec.EXACTLY ? maxWidth : sizeWidth;
+        int h = heightMode == MeasureSpec.EXACTLY ? maxHeight : sizeHeight;
+        setMeasuredDimension(w, h);
     }
 
     @Override

@@ -52,9 +52,6 @@ public class MediaCapturer {
                 takePhoto();
                 return true;
             }
-            case R.id.action_settings: {
-                return true;
-            }
         }
         return false;
     }

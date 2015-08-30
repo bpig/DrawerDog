@@ -78,14 +78,18 @@ public class MainActivity extends Activity {
     }
 
     private void initRightMenuLayout() {
-        mRightMenuLayout = (FlowLayout)findViewById(R.id.right_layout_menu);
-        List<String> tagList = new ArrayList<String>();
-        tagList.add("基地"); tagList.add("路灯"); tagList.add("天鹅蓝");
+        mRightMenuLayout = (FlowLayout) findViewById(R.id.right_layout_menu);
+        List<String> tagList = new ArrayList<String>() {{
+            add("基地");
+            add("路灯");
+            add("天鹅蓝");
+            add("将太无二");
+        }};
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         for (int i = 0; i < tagList.size(); ++i) {
             final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
                     inflate(R.layout.item_tag_layout, null);
-            TextView txtView = (TextView)llayout.findViewById(R.id.tag_item_textview);
+            TextView txtView = (TextView) llayout.findViewById(R.id.tag_item_textview);
             txtView.setText(tagList.get(i));
             llayout.setTag(i);
             mRightMenuLayout.addView(llayout, layoutParams);
