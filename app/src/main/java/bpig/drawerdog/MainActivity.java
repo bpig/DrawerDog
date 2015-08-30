@@ -3,15 +3,24 @@ package bpig.drawerdog;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -79,6 +88,59 @@ public class MainActivity extends Activity {
 
     private void initRightMenuLayout() {
         mRightMenuLayout = (FlowLayout)findViewById(R.id.right_layout_menu);
+
+        final EditText searchText = (EditText)findViewById(R.id.right_menu_search);
+        final Resources res = getResources();
+        final Drawable searchIcon = res.getDrawable(android.R.drawable.ic_menu_search);
+        final Drawable deleteIcon = res.getDrawable(android.R.drawable.ic_delete);
+        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, searchIcon, null);
+        searchText.addTextChangedListener(new TextWatcher() {
+            private boolean mWasEmpty = true;
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s)) {
+                    if (!mWasEmpty) {
+                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, searchIcon, null);
+                        mWasEmpty = true;
+                    }
+                } else {
+                    if (mWasEmpty) {
+                        searchText.setCompoundDrawablesWithIntrinsicBounds(null, null, deleteIcon, null);
+                        mWasEmpty = false;
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // RS
+            }
+        });
+        searchText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        int curX = (int)event.getX();
+                        if (curX > v.getWidth() - deleteIcon.getIntrinsicWidth() &&
+                                !TextUtils.isEmpty(searchText.getText())) {
+                            searchText.setText("");
+                            int oldInpuType = searchText.getInputType();
+                            searchText.setInputType(InputType.TYPE_NULL);
+                            searchText.onTouchEvent(event);
+                            searchText.setInputType(oldInpuType);
+                            return true;
+                        }
+                }
+                return false;
+            }
+        });
+
         List<String> tagList = new ArrayList<String>();
         tagList.add("基地"); tagList.add("路灯"); tagList.add("天鹅蓝");
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
