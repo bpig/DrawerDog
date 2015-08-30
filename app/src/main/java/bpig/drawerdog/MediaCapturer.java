@@ -24,25 +24,25 @@ public class MediaCapturer {
     private static final int PREVIEW_REQUEST_CODE = 1;
     private static final int SAVE_REQUEST_CODE = 2;
 
-    private Activity context;
+    private Activity mContext;
 
     public MediaCapturer(Activity context) {
-        this.context = context;
+        this.mContext = context;
     }
 
-    private String photoPath;
-    private File photoFile;
-    private static int photoCt = 0;
+    private String mPhotoPath;
+    private File mPhotoFile;
+    private static int PHOTO_CT = 0;
 
     private File filename() throws IOException {
         String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String file = time + "_" + photoCt;
-        photoCt++;
+        String file = time + "_" + PHOTO_CT;
+        PHOTO_CT++;
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         Log.i(TAG, dir.toString());
         File image = File.createTempFile(file, ".jpg", dir);
-        photoPath = "file:" + image.getAbsolutePath();
-        Log.i(TAG, photoPath);
+        mPhotoPath = "file:" + image.getAbsolutePath();
+        Log.i(TAG, mPhotoPath);
         return image;
     }
 
@@ -61,19 +61,19 @@ public class MediaCapturer {
 
     public void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(context.getPackageManager()) == null) {
+        if (takePictureIntent.resolveActivity(mContext.getPackageManager()) == null) {
             return;
         }
         try {
-            photoFile = filename();
+            mPhotoFile = filename();
         } catch (IOException ex) {
-            Toast toast = Toast.makeText(context.getApplicationContext(), "No SD card", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(mContext.getApplicationContext(), "No SD card", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
         Log.w(TAG, "start photo");
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        context.startActivityForResult(takePictureIntent, SAVE_REQUEST_CODE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
+        mContext.startActivityForResult(takePictureIntent, SAVE_REQUEST_CODE);
     }
 
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -88,16 +88,17 @@ public class MediaCapturer {
         Log.i(TAG, "get photo " + requestCode);
         if (requestCode == PREVIEW_REQUEST_CODE) {
             Bundle extras = data.getExtras();
-            Intent intent = new Intent(context, LabelActivity.class);
+            Intent intent = new Intent(mContext, LabelActivity.class);
             intent.putExtras(extras);
-            context.startActivity(intent);
+            mContext.startActivity(intent);
         } else if (requestCode == SAVE_REQUEST_CODE) {
             Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(photoFile);
+            Uri contentUri = Uri.fromFile(mPhotoFile);
             intent.setData(contentUri);
-            context.sendBroadcast(intent);
-//            intent = new Intent(context, LabelActivity.class);
-//            intent.putextra("uri", contentUri);
+            mContext.sendBroadcast(intent);
+            intent = new Intent(mContext, LabelActivity.class);
+            intent.putExtra(LabelActivity.IMAGE_URI, contentUri.toString());
+            mContext.startActivity(intent);
         }
         return true;
     }
