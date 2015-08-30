@@ -1,5 +1,6 @@
 package bpig.drawerdog;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import bpig.drawerdog.dao.LeftMenuItem;
 import static bpig.drawerdog.R.id.item_recycler;
 
 public class MainActivity extends Activity {
+    private static final String TAG = "xxxx";
     private MediaCapturer mMediaCapturer;
     private DrawerLayout mMainDrawerLayout;
     private ListView mLeftMenu;
@@ -38,6 +40,10 @@ public class MainActivity extends Activity {
     }
 
     private void initMainLayout() {
+        ActionBar bar = getActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+        }
         RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -78,8 +84,13 @@ public class MainActivity extends Activity {
             return true;
         }
         switch (itemId) {
+            case android.R.id.home:
             case R.id.action_left_menu: {
-                mMainDrawerLayout.openDrawer(mLeftMenu);
+                if (!mMainDrawerLayout.isDrawerOpen(mLeftMenu)) {
+                    mMainDrawerLayout.openDrawer(mLeftMenu);
+                } else {
+                    mMainDrawerLayout.closeDrawer(mLeftMenu);
+                }
                 return true;
             }
             default: {
