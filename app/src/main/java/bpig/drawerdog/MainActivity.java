@@ -148,6 +148,13 @@ public class MainActivity extends Activity {
             final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
                     inflate(R.layout.item_tag_layout, null);
             TextView txtView = (TextView)llayout.findViewById(R.id.tag_item_textview);
+            txtView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView txtView = (TextView)v;
+                    searchText.setText(txtView.getText());
+                }
+            });
             txtView.setText(tagList.get(i));
             llayout.setTag(i);
             mRightMenuLayout.addView(llayout, layoutParams);
