@@ -4,4 +4,5 @@
     <string name="hello_world">DrawerDog</string>
     <string name="action_settings">Photo</string>
     <string name="title_activity_label">LabelActivity</string>
+    <string name="title_activity_left_drawer">LeftDrawerActivity</string>
 </resources>
