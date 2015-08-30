@@ -25,6 +25,7 @@ public class MediaCapturer {
     private static final int SAVE_REQUEST_CODE = 2;
 
     private Activity context;
+
     public MediaCapturer(Activity context) {
         this.context = context;
     }

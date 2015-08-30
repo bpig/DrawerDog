@@ -30,6 +30,7 @@ public class LeftItemAdapter extends BaseAdapter {
         }
         return 0;
     }
+
     @Override
     public Object getItem(int position) {
         if (mItemList != null) {
@@ -37,10 +38,12 @@ public class LeftItemAdapter extends BaseAdapter {
         }
         return null;
     }
+
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup paret) {
         ItemViewHold hold;
@@ -49,10 +52,10 @@ public class LeftItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_left_menu, null);
             convertView.setTag(hold);
         } else {
-            hold = (ItemViewHold)convertView.getTag();
+            hold = (ItemViewHold) convertView.getTag();
         }
-        hold.mImageView = (ImageView)convertView.findViewById(R.id.left_item_icon);
-        hold.mTextView = (TextView)convertView.findViewById(R.id.left_item_name);
+        hold.mImageView = (ImageView) convertView.findViewById(R.id.left_item_icon);
+        hold.mTextView = (TextView) convertView.findViewById(R.id.left_item_name);
 
         hold.mImageView.setImageResource(mItemList.get(position).getItemImage());
         hold.mTextView.setText(mItemList.get(position).getItemName());
