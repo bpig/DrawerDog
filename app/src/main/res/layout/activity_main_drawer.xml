@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
 
+    <!-- left menu -->
     <ListView
         android:id="@+id/left_item_list"
         android:layout_gravity="start"
@@ -17,12 +18,24 @@
 
     <include layout="@layout/activity_main" />
 
-    <bpig.drawerdog.views.FlowLayout
-        android:id="@+id/right_layout_menu"
+    <!-- right menu -->
+    <LinearLayout
         android:layout_gravity="end"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
-    </bpig.drawerdog.views.FlowLayout>
+        android:background="#ffffff"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/right_menu_search"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <bpig.drawerdog.views.FlowLayout
+            android:id="@+id/right_layout_menu"
+            android:layout_width="200dp"
+            android:layout_height="match_parent">
+        </bpig.drawerdog.views.FlowLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

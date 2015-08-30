@@ -3,15 +3,24 @@ package bpig.drawerdog;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,18 +87,14 @@ public class MainActivity extends Activity {
     }
 
     private void initRightMenuLayout() {
-        mRightMenuLayout = (FlowLayout) findViewById(R.id.right_layout_menu);
-        List<String> tagList = new ArrayList<String>() {{
-            add("基地");
-            add("路灯");
-            add("天鹅蓝");
-            add("将太无二");
-        }};
+        mRightMenuLayout = (FlowLayout)findViewById(R.id.right_layout_menu);
+        List<String> tagList = new ArrayList<String>();
+        tagList.add("基地"); tagList.add("路灯"); tagList.add("天鹅蓝");
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         for (int i = 0; i < tagList.size(); ++i) {
             final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
                     inflate(R.layout.item_tag_layout, null);
-            TextView txtView = (TextView) llayout.findViewById(R.id.tag_item_textview);
+            TextView txtView = (TextView)llayout.findViewById(R.id.tag_item_textview);
             txtView.setText(tagList.get(i));
             llayout.setTag(i);
             mRightMenuLayout.addView(llayout, layoutParams);
