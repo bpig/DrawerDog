@@ -1,16 +1,16 @@
 package bpig.drawerdog;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-public class LabelActivity extends Activity {
+public class LabelActivity extends AppCompatActivity {
     private static final String TAG = "xxxx";
     public static final String IMAGE_URI = "image_uri";
     private ImageView mImageView;
