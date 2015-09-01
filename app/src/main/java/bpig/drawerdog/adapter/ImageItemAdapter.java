@@ -4,13 +4,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import bpig.drawerdog.dao.ImageItem;
 import bpig.drawerdog.R;
+import bpig.drawerdog.dao.ImageItem;
 
 /**
  * Created: shuai.li(286287737@qq.com)
@@ -55,12 +54,9 @@ public class ImageItemAdapter extends RecyclerView.Adapter<ImageItemAdapter.View
         imageView.setImageDrawable(drawable);
         TextView textView = (TextView) cardView.findViewById(R.id.item_time);
         textView.setText(items[position].getTimestamp());
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(position);
-                }
+        cardView.setOnClickListener(v-> {
+            if (listener != null) {
+                listener.onClick(position);
             }
         });
     }

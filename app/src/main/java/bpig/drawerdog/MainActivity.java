@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private void initMainLayout() {
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
+            bar.setHomeAsUpIndicator(R.drawable.ic_menu);
             bar.setDisplayHomeAsUpEnabled(true);
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
@@ -60,31 +61,26 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         ImageItemAdapter adapter = new ImageItemAdapter(ImageItem.items);
         recyclerView.setAdapter(adapter);
-        adapter.setListener(new ImageItemAdapter.Listener() {
-            @Override
-            public void onClick(int position) {
-
-            }
+        adapter.setListener(position -> {
+            //todo
         });
     }
 
     private void initLeftMenuLayout(NavigationView navigationView) {
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        return true;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            menuItem.setChecked(true);
+            return true;
+        });
     }
 
     private void initRightMenuLayout() {
-        List<String> tagList = new ArrayList<String>();
-        tagList.add("基地");
-        tagList.add("路灯");
-        tagList.add("天鹅蓝");
+        List<String> tagList = new ArrayList<String>() {{
+            add("基地");
+            add("路灯");
+            add("天鹅蓝");
+            add("将太无二");
+        }};
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         for (int i = 0; i < tagList.size(); ++i) {
             final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
