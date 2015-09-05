@@ -3,6 +3,7 @@ package bpig.drawerdog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "xxxx";
     private MediaCapturer mMediaCapturer;
 
-    @Bind(R.id.act_main_drawerlayout)
-    DrawerLayout mMainDrawerLayout;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
     @Bind(R.id.left_nav)
-    NavigationView mNavigationView;
+    NavigationView mLeftNav;
+
+    @Bind(R.id.content)
+    View mContent;
 
     @Bind(R.id.right_layout_menu)
     FlowLayout mRightMenuLayout;
@@ -48,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mMediaCapturer = new MediaCapturer(this);
         initMainLayout();
-        initLeftMenuLayout(mNavigationView);
+        initLeftMenuLayout();
         initRightMenuLayout();
     }
 
@@ -69,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initLeftMenuLayout(NavigationView navigationView) {
-        navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
-        navigationView.setNavigationItemSelectedListener(menuItem -> {
+    private void initLeftMenuLayout() {
+        mLeftNav.setNavigationItemSelectedListener(menuItem -> {
+            Snackbar.make(mContent, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
             menuItem.setChecked(true);
             return true;
         });
@@ -110,13 +115,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         switch (itemId) {
-            case android.R.id.home:
-            case R.id.action_left_menu: {
-                if (!mMainDrawerLayout.isDrawerOpen(mNavigationView)) {
-                    mMainDrawerLayout.openDrawer(mNavigationView);
-                } else {
-                    mMainDrawerLayout.closeDrawer(mNavigationView);
-                }
+            case android.R.id.home: {
+                mDrawerLayout.openDrawer(mLeftNav);
                 return true;
             }
             default: {
