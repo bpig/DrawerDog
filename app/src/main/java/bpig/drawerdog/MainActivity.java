@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bpig.drawerdog.adapter.ImageItemAdapter;
-import bpig.drawerdog.dao.ImageItem;
+import bpig.drawerdog.dao.ImageTagItem;
 import bpig.drawerdog.views.FlowLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,18 +67,24 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        ImageItemAdapter adapter = new ImageItemAdapter(ImageItem.items);
+        ImageItemAdapter adapter = new ImageItemAdapter(ImageTagItem.items);
         recyclerView.setAdapter(adapter);
-        adapter.setListener(position -> {
-            //todo
+        adapter.setListener(new ImageItemAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+
+            }
         });
     }
 
     private void initLeftMenuLayout() {
-        mLeftNav.setNavigationItemSelectedListener(menuItem -> {
-            Snackbar.make(mContent, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
-            menuItem.setChecked(true);
-            return true;
+        mLeftNav.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        return true;
+                    }
         });
     }
 
@@ -116,7 +122,10 @@ public class MainActivity extends AppCompatActivity {
         }
         switch (itemId) {
             case android.R.id.home: {
-                mDrawerLayout.openDrawer(mLeftNav);
+                // mDrawerLayout.openDrawer(mLeftNav);
+                // TODO
+                Intent intent = new Intent(this, LabelActivity.class);
+                startActivity(intent);
                 return true;
             }
             default: {

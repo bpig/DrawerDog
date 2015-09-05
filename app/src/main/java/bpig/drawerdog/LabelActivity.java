@@ -10,6 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import bpig.drawerdog.dao.ImageTagItem;
+import bpig.drawerdog.views.TaggedImageView;
+
 public class LabelActivity extends AppCompatActivity {
     private static final String TAG = "xxxx";
     public static final String IMAGE_URI = "image_uri";
@@ -30,6 +36,7 @@ public class LabelActivity extends AppCompatActivity {
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
         }
+        /*
         mImageView = (ImageView) findViewById(R.id.capture_img);
         Intent intent = getIntent();
         if (intent != null) {
@@ -41,6 +48,12 @@ public class LabelActivity extends AppCompatActivity {
         }
         Uri image = Uri.parse(mImageValue);
         mImageView.setImageURI(image);
+        */
+        TaggedImageView taggedImageView = (TaggedImageView) findViewById(R.id.tagged_image_view);
+        List<ImageTagItem> taggedItems = new ArrayList<>();
+        taggedItems.add(new ImageTagItem(300, 400, "subway"));
+        taggedItems.add(new ImageTagItem(20, 300, "coding"));
+        taggedImageView.setImageAndTags(R.drawable.home, taggedItems);
     }
 
     @Override
