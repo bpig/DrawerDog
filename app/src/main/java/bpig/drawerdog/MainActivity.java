@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,9 +25,6 @@ import bpig.drawerdog.views.FlowLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static bpig.drawerdog.R.id.item_recycler;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "xxxx";
     private MediaCapturer mMediaCapturer;
@@ -37,12 +36,15 @@ public class MainActivity extends AppCompatActivity {
     NavigationView mNavigationView;
 
     @Bind(R.id.right_layout_menu)
-   FlowLayout mRightMenuLayout;
+    FlowLayout mRightMenuLayout;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_drawer);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mMediaCapturer = new MediaCapturer(this);
         initMainLayout();
@@ -51,12 +53,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initMainLayout() {
+        setSupportActionBar(mToolbar);
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
-            bar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            bar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
             bar.setDisplayHomeAsUpEnabled(true);
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(item_recycler);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         ImageItemAdapter adapter = new ImageItemAdapter(ImageItem.items);
@@ -81,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
             add("天鹅蓝");
             add("将太无二");
         }};
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < tagList.size(); ++i) {
             final LinearLayout llayout = (LinearLayout) LayoutInflater.from(this).
                     inflate(R.layout.item_tag_layout, null);
