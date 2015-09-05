@@ -2,6 +2,7 @@ package bpig.drawerdog;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import bpig.drawerdog.dao.ImageTagItem;
+import bpig.drawerdog.utils.ImageUtils;
 import bpig.drawerdog.views.TaggedImageView;
 
 public class LabelActivity extends AppCompatActivity {
@@ -53,7 +57,17 @@ public class LabelActivity extends AppCompatActivity {
         List<ImageTagItem> taggedItems = new ArrayList<>();
         taggedItems.add(new ImageTagItem(300, 400, "subway"));
         taggedItems.add(new ImageTagItem(20, 300, "coding"));
-        taggedImageView.setImageAndTags(R.drawable.home, taggedItems);
+
+        int toWidth = getWindowManager().getDefaultDisplay().getWidth();
+        int toHeight = getWindowManager().getDefaultDisplay().getHeight();
+        Drawable resizedDrawable = ImageUtils.resizeDrawable(this, R.drawable.home, toWidth, toHeight);
+
+        float density = getResources().getDisplayMetrics().density;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                (int)(resizedDrawable.getIntrinsicWidth() * density),
+                (int)(resizedDrawable.getIntrinsicHeight() * density));
+        taggedImageView.setLayoutParams(params);
+        taggedImageView.setImageAndTags(resizedDrawable, taggedItems);
     }
 
     @Override
