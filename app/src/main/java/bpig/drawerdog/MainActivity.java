@@ -3,13 +3,13 @@ package bpig.drawerdog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,11 +18,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.snappydb.DB;
+import com.snappydb.DBFactory;
+import com.snappydb.SnappydbException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import bpig.drawerdog.adapter.ImageItemAdapter;
-import bpig.drawerdog.dao.ImageTagItem;
+import bpig.drawerdog.dao.ImageItem;
 import bpig.drawerdog.views.FlowLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,11 +50,18 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    DB mDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        try {
+            mDB = DBFactory.open(this, "test");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
         mMediaCapturer = new MediaCapturer(this);
         initMainLayout();
         initLeftMenuLayout();
@@ -67,7 +78,14 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        ImageItemAdapter adapter = new ImageItemAdapter(ImageTagItem.items);
+        try {
+            mDB.put("store", "value");
+            String value = mDB.get("store");
+            Log.w("xxx", value);
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        ImageItemAdapter adapter = new ImageItemAdapter(ImageItem.sItems);
         recyclerView.setAdapter(adapter);
         adapter.setListener(new ImageItemAdapter.Listener() {
             @Override
@@ -85,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         return true;
                     }
-        });
+                });
     }
 
     private void initRightMenuLayout() {

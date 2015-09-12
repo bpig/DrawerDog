@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import bpig.drawerdog.R;
-import bpig.drawerdog.dao.ImageTagItem;
+import bpig.drawerdog.dao.ImageItem;
 
 /**
  * Created: shuai.li(286287737@qq.com)
@@ -18,21 +21,20 @@ import bpig.drawerdog.dao.ImageTagItem;
  * Time: 19:20
  */
 public class ImageItemAdapter extends RecyclerView.Adapter<ImageItemAdapter.ViewHolder> {
-    private ImageTagItem[] items;
+    private List<ImageItem> items;
     private Listener listener;
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    public ImageItemAdapter(ImageTagItem[] items) {
+    public ImageItemAdapter(List<ImageItem> items) {
         this.items = items;
-
     }
 
     @Override
     public int getItemCount() {
-        return items.length;
+        return items.size();
     }
 
     @Override
@@ -51,10 +53,12 @@ public class ImageItemAdapter extends RecyclerView.Adapter<ImageItemAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CardView cardView = holder.cardView;
         ImageView imageView = (ImageView) cardView.findViewById(R.id.item_image);
-        Drawable drawable = cardView.getResources().getDrawable(items[position].getImageId());
+        ImageItem item = items.get(position);
+        Drawable drawable = cardView.getResources().getDrawable(item.getImage());
         imageView.setImageDrawable(drawable);
         TextView textView = (TextView) cardView.findViewById(R.id.item_time);
-        textView.setText(items[position].getTimestamp());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        textView.setText(df.format(item.getDate()));
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

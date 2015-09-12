@@ -17,8 +17,9 @@ public class ImageTagView extends RelativeLayout implements TextView.OnEditorAct
     private TextView mImgTagText;
     private EditText mImgTagEdit;
 
-    public enum EditStatus {ET_NORMAL, ET_EDIT};
-    public enum Direction {DIR_LEFT, DIR_RIGHT};
+    public enum EditStatus {ET_NORMAL, ET_EDIT}
+
+    public enum Direction {DIR_LEFT, DIR_RIGHT}
 
     private Direction mCurDirection = Direction.DIR_LEFT;
     private InputMethodManager mInputMethod;
@@ -40,12 +41,12 @@ public class ImageTagView extends RelativeLayout implements TextView.OnEditorAct
     protected void layoutViews() {
         LayoutInflater.from(mContext).inflate(R.layout.layout_imgtagview, this, true);
         mImgTagView = findViewById(R.id.id_imgtagview);
-        mImgTagText = (TextView)findViewById(R.id.id_imgtagtext);
-        mImgTagEdit = (EditText)findViewById(R.id.id_imgtagedit);
+        mImgTagText = (TextView) findViewById(R.id.id_imgtagtext);
+        mImgTagEdit = (EditText) findViewById(R.id.id_imgtagedit);
     }
 
     protected void initResources() {
-        mInputMethod = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        mInputMethod = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         mImgTagEdit.setOnEditorActionListener(this);
     }
 
@@ -76,9 +77,9 @@ public class ImageTagView extends RelativeLayout implements TextView.OnEditorAct
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        View parent = (View)getParent();
-        int parentCenter = (int)(parent.getWidth() * 0.5);
-        int thisCenter = (int)(l + this.getWidth() * 0.5);
+        View parent = (View) getParent();
+        int parentCenter = (int) (parent.getWidth() * 0.5);
+        int thisCenter = (int) (l + this.getWidth() * 0.5);
         if (thisCenter <= parentCenter) {
             mCurDirection = Direction.DIR_LEFT;
         } else {

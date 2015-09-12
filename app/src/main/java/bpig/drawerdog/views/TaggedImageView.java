@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
-import bpig.drawerdog.dao.ImageTagItem;
+import bpig.drawerdog.dao.ImageItem;
 
 public class TaggedImageView extends RelativeLayout implements View.OnTouchListener {
     private static final int CLICK_RANGE = 5;
@@ -21,30 +21,30 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
     private int mTouchViewTop = 0;
     private View mTouchView, mClickView;
 
-    public TaggedImageView(Context context, int resid, List<ImageTagItem> tagList) {
-        super(context, null);
-        setImageAndTags(resid, tagList);
-    }
+//    public TaggedImageView(Context context, int resid, List<ImageItem.Tag> tagList) {
+//        super(context, null);
+//        setImageAndTags(resid, tagList);
+//    }
 
-    public void setImageAndTags(int resid, List<ImageTagItem> tagList) {
+    public void setImageAndTags(int resid, List<ImageItem.Tag> tagList) {
         this.setBackgroundResource(resid);
         if (tagList != null) {
-            for (ImageTagItem tagItem : tagList) {
-                this.addTagView((int) tagItem.getPosX(), (int) tagItem.getPosY(), tagItem.getTag());
+            for (ImageItem.Tag tagItem : tagList) {
+                this.addTagView((int) tagItem.x, (int) tagItem.y, tagItem.text);
             }
         }
     }
 
-    public TaggedImageView(Context context, Drawable background, List<ImageTagItem> tagList) {
-        super(context, null);
-        setImageAndTags(background, tagList);
-    }
-
-    public void setImageAndTags(Drawable background, List<ImageTagItem> tagList) {
+    //    public TaggedImageView(Context context, Drawable background, List<ImageItem.Tag> tagList) {
+//        super(context, null);
+//        setImageAndTags(background, tagList);
+//    }
+//
+    public void setImageAndTags(Drawable background, List<ImageItem.Tag> tagList) {
         this.setBackground(background);
         if (tagList != null) {
-            for (ImageTagItem tagItem : tagList) {
-                this.addTagView((int) tagItem.getPosX(), (int) tagItem.getPosY(), tagItem.getTag());
+            for (ImageItem.Tag tagItem : tagList) {
+                this.addTagView((int) tagItem.x, (int) tagItem.y, tagItem.text);
             }
         }
     }
@@ -53,10 +53,12 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
     public TaggedImageView(Context context) {
         super(context, null);
     }
+
     public TaggedImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initResources();
     }
+
     private void initResources() {
         setOnTouchListener(this);
     }
@@ -67,11 +69,11 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
             case MotionEvent.ACTION_DOWN:
                 mTouchView = null;
                 if (mClickView != null) {
-                    ((ImageTagView)mClickView).setEditStatus(ImageTagView.EditStatus.ET_NORMAL);
+                    ((ImageTagView) mClickView).setEditStatus(ImageTagView.EditStatus.ET_NORMAL);
                     mClickView = null;
                 }
-                mCurTagX = (int)event.getX();
-                mCurTagY = (int)event.getY();
+                mCurTagX = (int) event.getX();
+                mCurTagY = (int) event.getY();
                 if (hasView(mCurTagX, mCurTagY)) {
                     mTouchViewLeft = mTouchView.getLeft();
                     mTouchViewTop = mTouchView.getTop();
@@ -80,14 +82,14 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                moveTouchView((int)event.getX(), (int)event.getY());
+                moveTouchView((int) event.getX(), (int) event.getY());
                 break;
             case MotionEvent.ACTION_UP:
-                int endX = (int)event.getX();
-                int endY = (int)event.getY();
+                int endX = (int) event.getX();
+                int endY = (int) event.getY();
                 if (mTouchView != null && Math.abs(endX - mCurTagX) < CLICK_RANGE &&
                         Math.abs(endY - mCurTagY) < CLICK_RANGE) {
-                    ((ImageTagView)mTouchView).setEditStatus(ImageTagView.EditStatus.ET_EDIT);
+                    ((ImageTagView) mTouchView).setEditStatus(ImageTagView.EditStatus.ET_EDIT);
                     mClickView = mTouchView;
                 }
                 mTouchView = null;
@@ -99,8 +101,8 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
     private boolean hasView(int x, int y) {
         for (int i = 0; i < this.getChildCount(); ++i) {
             View view = this.getChildAt(i);
-            int left = (int)view.getX();
-            int top = (int)view.getY();
+            int left = (int) view.getX();
+            int top = (int) view.getY();
             int right = view.getRight();
             int bottom = view.getBottom();
             Rect rect = new Rect(left, top, right, bottom);
@@ -115,7 +117,7 @@ public class TaggedImageView extends RelativeLayout implements View.OnTouchListe
     }
 
     private void addTagView(int x, int y, String tag) {
-        View newView = null;
+        View newView;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (x > getWidth() * 0.5) {
